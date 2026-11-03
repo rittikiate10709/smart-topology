@@ -1,0 +1,12 @@
+{
+  "name": "smart-topology-noc",
+  "version": "1.0.0",
+  "description": "SMART TOPOLOGY — ระบบเฝ้าระวังเครือข่ายและอุปกรณ์ (Network Monitoring / NOC)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "SEED_DEMO=1 node server.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}
