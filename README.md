@@ -15,17 +15,24 @@
 | Dashboard | SLA Gauge, RTT & Jitter Trend, Availability Trend, Latency Histogram, Status Donut, Critical Path, Top Latency |
 | Topology | แผนผังอัตโนมัติตามลำดับชั้น, ลากจัดวางโหนดได้ (บันทึกตำแหน่ง), ซูม/เลื่อน, เส้น LINK DOWN สีแดง |
 | แจ้งเตือน | สร้าง Alert อัตโนมัติเมื่ออุปกรณ์ล่ม/ช้า, ปิดเองเมื่อฟื้นตัว, รับทราบ/ปิดเรื่อง, Toast แจ้งทันที |
+<<<<<<< HEAD
 | Log & รายงาน | บันทึกผลการตรวจลง **MySQL / MariaDB** และหน้ารายงานกราฟเปรียบเทียบ รายวัน/เดือน/ปี, Heatmap วัน×เวลา, วิเคราะห์ปัญหาที่เกิดซ้ำ → **[docs/MYSQL-LOG-TH.md](docs/MYSQL-LOG-TH.md)** |
 | ฐานข้อมูล Master/Slave | ตรวจ Replication (IO/SQL thread, Delay), เปรียบเทียบข้อมูลด้วย **Custom Query** ที่กำหนดเอง, เทียบตาราง, แจ้งเตือน → **[docs/DBSYNC-TH.md](docs/DBSYNC-TH.md)** |
 | REST API | `/api/v1/*` สำหรับระบบภายนอก, **API Key** (สิทธิ์ viewer/operator/admin/integration, จำกัด IP, rate limit, วันหมดอายุ), CORS, OpenAPI 3 + หน้าทดลองเรียก `/api-docs` → **[docs/API-TH.md](docs/API-TH.md)** |
 | สำรอง/กู้คืน | ไฟล์สำรองเก็บ**ทุกค่าที่ตั้งจากหน้าเว็บ** เข้ารหัส AES-256-GCM ได้, สำรองอัตโนมัติรายวัน, กู้คืนแล้วใช้งานต่อได้ทันที → **[docs/BACKUP-TH.md](docs/BACKUP-TH.md)** |
 | Wazuh SIEM | ดึงสถานะ Manager/Agents, สถิติ Component, Configuration, SCA + CIS-CAT · ส่งการแจ้งเตือนเข้า Wazuh (`POST /events`) · รับ Alert จาก Wazuh กลับมา → **[docs/WAZUH-TH.md](docs/WAZUH-TH.md)** |
+=======
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 | อื่น ๆ | อัปเดตเรียลไทม์ (Server-Sent Events), โหมดมืด, IP Mask ซ่อน IP ตอนนำเสนอ, รองรับมือถือ |
 
 ## ความต้องการของระบบ
 
+<<<<<<< HEAD
 - **Node.js 18 ขึ้นไป** และสั่ง `npm install` ครั้งแรก (ติดตั้งไลบรารี `mysql2` สำหรับเก็บ log)
 - (ถ้าต้องการเก็บ log/รายงาน) MySQL 5.7+ / 8.x หรือ MariaDB 10.4+
+=======
+- **Node.js 18 ขึ้นไป** (ไม่ต้องติดตั้งแพ็กเกจเพิ่ม — zero dependency)
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 - เครื่องเซิร์ฟเวอร์ต้องอยู่ในเครือข่ายที่ ping อุปกรณ์ได้ และมีคำสั่ง `ping`
   (Windows/macOS มีอยู่แล้ว, Ubuntu: `sudo apt install iputils-ping`)
 
@@ -35,7 +42,10 @@
 
 ```bash
 cd smart-topology
+<<<<<<< HEAD
 npm install      # ครั้งแรกเท่านั้น
+=======
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 node server.js
 ```
 เปิดเบราว์เซอร์ไปที่ `http://<IP-เซิร์ฟเวอร์>:3000`
@@ -43,6 +53,7 @@ node server.js
 - ผู้ใช้เริ่มต้น: **admin** / **admin1234** (ระบบจะบังคับให้เปลี่ยนรหัสทันทีที่เข้าระบบ)
 - ต้องการข้อมูลตัวอย่าง: `SEED_DEMO=1 node server.js` หรือกดปุ่ม “โหลดข้อมูลตัวอย่าง” ในหน้าแรก
 
+<<<<<<< HEAD
 ### วิธีที่ 2 — Docker (แนะนำสำหรับเซิร์ฟเวอร์)
 
 ```bash
@@ -54,6 +65,14 @@ docker run -d --name smart-topology --restart unless-stopped --network host \
 
 Image สร้างอัตโนมัติด้วย GitHub Actions ทุกครั้งที่ push โค้ด (amd64 + arm64, ผ่านการทดสอบก่อน push)
 ขั้นตอนอัปโหลดขึ้น GitHub / Docker Hub แบบละเอียด → **[docs/DEPLOY-TH.md](docs/DEPLOY-TH.md)**
+=======
+### วิธีที่ 2 — Docker
+
+```bash
+docker compose up -d --build
+```
+ข้อมูลเก็บที่โฟลเดอร์ `./data` (สำรองไฟล์ `data/db.json` ได้เลย)
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 
 ### ให้รันอัตโนมัติเมื่อเปิดเครื่อง (Linux systemd)
 
@@ -86,9 +105,13 @@ sudo systemctl enable --now smart-topology
 | `DATA_DIR` | `./data` | ที่เก็บฐานข้อมูล `db.json` |
 | `ADMIN_PASSWORD` | `admin1234` | รหัส admin ตอนติดตั้งครั้งแรก |
 | `COOKIE_SECURE` | — | ตั้งเป็น `1` เมื่อเปิดผ่าน HTTPS |
+<<<<<<< HEAD
 | `TRUST_PROXY` | — | ตั้งเป็น `1` เมื่ออยู่หลัง Reverse Proxy (ใช้ IP จาก `X-Forwarded-For` ตรวจ API Key) |
 | `SEED_DEMO` | — | ตั้งเป็น `1` เพื่อสร้างอุปกรณ์ตัวอย่างเมื่อฐานข้อมูลว่าง |
 | `NMS_MYSQL_HOST` / `_PORT` / `_USER` / `_PASSWORD` / `_DATABASE` | — | ตั้งค่า MySQL ล่วงหน้า (ใช้ครั้งแรกเท่านั้น ภายหลังแก้ที่หน้าเว็บ) |
+=======
+| `SEED_DEMO` | — | ตั้งเป็น `1` เพื่อสร้างอุปกรณ์ตัวอย่างเมื่อฐานข้อมูลว่าง |
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 
 ## รูปแบบไฟล์ CSV สำหรับนำเข้า
 
@@ -146,12 +169,19 @@ HIS Database,10.250.0.10,database,Dell,R750,Data Center,250,Core Switch,3306
 1. เปลี่ยนรหัส admin ทันที และสร้างบัญชีแยกรายบุคคล
 2. เปิดใช้ผ่าน HTTPS (เช่นวาง Nginx / Caddy หน้าเว็บ) แล้วตั้ง `COOKIE_SECURE=1`
 3. จำกัดการเข้าถึงพอร์ต 3000 ให้เฉพาะเครือข่ายภายใน / VLAN ของฝ่ายไอที
+<<<<<<< HEAD
 4. เปิด “สำรองอัตโนมัติ” (ตั้งค่า → สำรองและกู้คืนข้อมูล) และดาวน์โหลดไฟล์สำรองแบบเข้ารหัสเก็บไว้นอกเครื่อง
 5. API Key ให้สิทธิ์น้อยที่สุดที่พอใช้งาน (ส่วนใหญ่ `viewer`) และจำกัด IP ต้นทาง
 
 ## ต่อยอดในอนาคต
 
 ~~เก็บประวัติลงฐานข้อมูล~~ ✅ ทำแล้ว (MySQL)
+=======
+4. สำรองไฟล์ `data/db.json` เป็นประจำ
+
+## ต่อยอดในอนาคต
+
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 ข้อมูล Throughput (Mbps), CPU/RAM ของ Server และสถานะพอร์ตของ Switch ต้องอ่านผ่าน **SNMP** ซึ่งสามารถเพิ่มเป็นวิธีตรวจที่ 3 ได้ในฟังก์ชัน `checkDevice()` ของ `server.js`
 ช่องทางแจ้งเตือนใหม่ (เช่น Email) เพิ่มได้ที่ฟังก์ชัน `sendChannel()`
 
@@ -160,6 +190,7 @@ HIS Database,10.250.0.10,database,Dell,R750,Data Center,250,Core Switch,3306
 ```
 smart-topology/
 ├── server.js            # API, Login/Session, ระบบตรวจสอบ, แจ้งเตือน, SSE
+<<<<<<< HEAD
 ├── lib/mysqlLog.js      # เขียน log ลง MySQL + คำนวณรายงาน
 ├── lib/dbSync.js        # เฝ้าระวัง/เปรียบเทียบฐานข้อมูล Master–Slave
 ├── lib/apiGateway.js    # API Key, IP allowlist, rate limit, CORS
@@ -182,5 +213,13 @@ smart-topology/
 ├── docs/API-TH.md       # คู่มือ REST API / API Key
 ├── docs/BACKUP-TH.md    # คู่มือสำรองและกู้คืน
 ├── docs/WAZUH-TH.md     # คู่มือเชื่อมต่อ Wazuh
+=======
+├── public/
+│   ├── login.html       # หน้าเข้าสู่ระบบ
+│   ├── index.html       # หน้าหลัก NOC
+│   ├── css/app.css
+│   └── js/ common.js · illus.js · login.js · app.js
+├── Dockerfile · docker-compose.yml
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 └── data/db.json         # สร้างอัตโนมัติ (ผู้ใช้, อุปกรณ์, การแจ้งเตือน, ตั้งค่า)
 ```

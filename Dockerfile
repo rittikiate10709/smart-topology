@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ---------------------------------------------------------------
 # SMART TOPOLOGY — Network Monitoring (NOC)
 # Image ขนาดเล็ก (Alpine) · รันด้วยผู้ใช้ทั่วไป (ไม่ใช่ root)
@@ -38,4 +39,15 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget -q -O /dev/null "http://127.0.0.1:${PORT}/login" || exit 1
 
+=======
+FROM node:20-alpine
+# iputils ให้คำสั่ง ping ที่รายงานเวลาแม่นยำ
+RUN apk add --no-cache iputils tzdata
+ENV TZ=Asia/Bangkok NODE_ENV=production PORT=3000 DATA_DIR=/data
+WORKDIR /app
+COPY package.json server.js ./
+COPY public ./public
+VOLUME ["/data"]
+EXPOSE 3000
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 CMD ["node", "server.js"]

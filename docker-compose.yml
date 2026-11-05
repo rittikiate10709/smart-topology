@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ---------------------------------------------------------------
 # วิธีใช้
 #   เฉพาะระบบ NOC (ใช้ MySQL ที่มีอยู่แล้ว / ไม่เก็บ log):
@@ -64,3 +65,18 @@ services:
 volumes:
   nms-data:
   mysql-data:
+=======
+services:
+  smart-topology:
+    build: .
+    container_name: smart-topology-noc
+    restart: unless-stopped
+    # network_mode: host ช่วยให้ ping อุปกรณ์ใน LAN ได้ตรงที่สุด (Linux)
+    network_mode: host
+    environment:
+      - PORT=3000
+      - ADMIN_PASSWORD=ChangeMe@2026   # รหัสผ่าน admin ครั้งแรก (เปลี่ยนได้)
+      # - COOKIE_SECURE=1              # เปิดเมื่อใช้งานผ่าน HTTPS
+    volumes:
+      - ./data:/data
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4

@@ -317,6 +317,7 @@ textarea.inp{height:auto;padding:10px 12px;font-family:var(--mono);font-size:12.
 .switch input:checked+span{background:var(--brand)}
 .switch input:checked+span::before{transform:translateX(18px)}
 #notifyBox{margin-top:14px}
+<<<<<<< HEAD
 @media (max-width:1100px){.nfgrid{grid-template-columns:minmax(0,1fr)}}
 
 /* ---------- reports */
@@ -488,3 +489,6 @@ tr.dim td{opacity:.55}
 .wz-steps .code-block{margin-top:6px}
 .wzt{padding-top:14px}.mb .mtabs{padding:0;margin-bottom:4px}
 .code-block{overflow-wrap:anywhere}
+=======
+@media (max-width:1100px){.nfgrid{grid-template-columns:1fr}}
+>>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
