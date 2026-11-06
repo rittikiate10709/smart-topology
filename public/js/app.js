@@ -142,7 +142,6 @@ function renderKpis() {
   const up = mon.filter(isUp).length, avail = mon.length ? (up / mon.length) * 100 : 0;
   const core = D.find((d) => d.type === 'core') || D.find((d) => d.type === 'switch');
   const his = D.find((d) => d.type === 'database') || D.find((d) => d.type === 'server');
-<<<<<<< HEAD
   const ds = S.state.dbsync || {};
   const DSL = { sync: ['Active', 'ok'], lag: ['Lag', 'warn'], diff: ['Diff', 'warn'], warning: ['ระวัง', 'warn'], broken: ['Broken', 'bad'], offline: ['Offline', 'bad'], norepl: ['No Repl', 'bad'], pending: ['รอตรวจ', 'muted'] };
   const hisCard = ds.configured
@@ -153,8 +152,6 @@ function renderKpis() {
       ${his ? `<div class="t" style="display:flex;gap:8px;align-items:center"><span style="color:var(--brand);overflow:hidden;text-overflow:ellipsis">${esc(his.name)}</span>${stPill(his.status)}</div>
       <div class="row"><span>${his.method === 'tcp' ? `ตรวจพอร์ต ${his.port}` : 'ICMP'}</span><span class="mono">${fmtMs(his.latency)}</span></div>`
       : `<div class="t muted" style="font-weight:500;font-size:14px">ยังไม่ได้กำหนด Server / Database</div><div class="row">ตั้งค่าที่แท็บ “ฐานข้อมูล Master/Slave”</div>`}</div>`;
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   const t = S.state.trend[S.state.trend.length - 1];
   const lossAll = mon.length ? Math.round((mon.filter((d) => d.status === 'offline').length / mon.length) * 1000) / 10 : 0;
   const vlans = new Set(D.map((d) => d.vlan).filter(Boolean)).size;
@@ -170,14 +167,7 @@ function renderKpis() {
       <div class="v">${D.length}<small style="color:var(--brand)">Availability ${avail.toFixed(0)}%</small></div>
       <div class="row" style="justify-content:flex-start"><span class="pill ok"><span class="sdot c-ok"></span>Online ${c.online + c.warning}</span><span class="pill bad"><span class="sdot c-bad"></span>Offline ${c.offline}</span></div></div>
     ${devBox(core, 'zap', 'Core Switch')}
-<<<<<<< HEAD
     ${hisCard}
-=======
-    <div class="card kpi" ${his ? `data-act="detail" data-id="${his.id}" style="cursor:pointer"` : ''}><div class="h">ระบบสารสนเทศโรงพยาบาล ${icon('database', 18)}</div>
-      ${his ? `<div class="t" style="display:flex;gap:8px;align-items:center"><span style="color:var(--brand);overflow:hidden;text-overflow:ellipsis">${esc(his.name)}</span>${stPill(his.status)}</div>
-      <div class="row"><span>${his.method === 'tcp' ? `ตรวจพอร์ต ${his.port}` : 'ICMP'}</span><span class="mono">${fmtMs(his.latency)}</span></div>`
-      : `<div class="t muted" style="font-weight:500;font-size:14px">ยังไม่ได้กำหนด Server / Database</div><div class="row">เลือกประเภท “Database / HIS”</div>`}</div>
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
     <div class="card kpi"><div class="h">ความเร็วตอบสนองเฉลี่ย ${icon('activity', 18)}</div>
       <div class="v">${t && t.avg != null ? t.avg.toFixed(2) : '—'}<small>ms</small></div>
       <div class="row"><span>Device Loss</span><span class="mono">${lossAll.toFixed(1)}%</span></div></div>
@@ -188,11 +178,7 @@ function renderKpis() {
 function renderNav() {
   const c = counts(), tabs = [
     ['dashboard', 'dashboard', 'ภาพรวม'], ['topology', 'network', 'Network Topology'], ['devices', 'server', 'อุปกรณ์', devs().length],
-<<<<<<< HEAD
     ['alerts', 'bell', 'การแจ้งเตือน', activeAlerts().length], ['reports', 'chart', 'รายงาน / สถิติ'], ['dbsync', 'database', 'ฐานข้อมูล Master/Slave'], ['wazuh', 'shield', 'Wazuh SIEM'], ...(can('admin') ? [['users', 'users', 'ผู้ใช้งาน']] : []), ['settings', 'sliders', 'ตั้งค่า']];
-=======
-    ['alerts', 'bell', 'การแจ้งเตือน', activeAlerts().length], ...(can('admin') ? [['users', 'users', 'ผู้ใช้งาน']] : []), ['settings', 'sliders', 'ตั้งค่า']];
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   $('#nav').innerHTML = tabs.map(([k, ic, l, n]) => `<button class="tab ${S.tab === k ? 'active' : ''}" data-act="tab" data-tab="${k}">${icon(ic, 16)} ${l}${n != null ? ` <span class="cnt">${n}</span>` : ''}</button>`).join('')
     + `<span class="grow"></span><span class="chips">
       <span class="pill ok">ปกติ ${c.online}</span><span class="pill warn">ควรระวัง ${c.warning}</span><span class="pill bad">ออฟไลน์ ${c.offline}</span><span class="pill maint">บำรุงรักษา ${c.maintenance}</span><span class="pill muted">ปิดตรวจ ${c.disabled}</span></span>`;
@@ -587,23 +573,15 @@ function vSettings() {
       <div class="code-block">ICMP  → ใช้คำสั่ง ping ของเซิร์ฟเวอร์ (Windows / Linux / macOS)
 TCP   → เชื่อมต่อพอร์ตบริการ เช่น 3306 (MySQL/HIS), 443 (HTTPS), 22 (SSH)
 สถานะ → ตอบ ≤ เกณฑ์ = ปกติ · ตอบ > เกณฑ์ = ควรระวัง · ไม่ตอบ 2 รอบติด = ออฟไลน์</div></div></div>
-<<<<<<< HEAD
     ${can('admin') ? `<div class="card panel" id="mysqlBox"><div class="empty">${icon('refresh', 22, 'spin')}</div></div>` : ''}
     ${can('admin') ? `<div class="card panel" id="notifyBox"><div class="empty">${icon('refresh', 22, 'spin')}</div></div>` : ''}
     ${can('admin') ? `<div class="card panel" id="apiBox"><div class="empty">${icon('refresh', 22, 'spin')}</div></div>` : ''}
     ${can('admin') ? `<div class="card panel" id="backupBox"><div class="empty">${icon('refresh', 22, 'spin')}</div></div>` : ''}`;
-=======
-    ${can('admin') ? `<div class="card panel" id="notifyBox"><div class="empty">${icon('refresh', 22, 'spin')}</div></div>` : ''}`;
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 }
 
 /* ---------------------------------------------------------- External notification */
 const CH_TYPES = { moph: 'MOPH Notify (หมอพร้อม)', webhook: 'Webhook (JSON)', telegram: 'Telegram Bot' };
-<<<<<<< HEAD
 const NF_KIND = { down: ['ล่ม', 'bad'], repeat: ['แจ้งซ้ำ', 'bad'], recover: ['กลับมา', 'ok'], warning: ['ช้า', 'warn'], test: ['ทดสอบ', 'info'], report: ['รายงาน', 'info'] };
-=======
-const NF_KIND = { down: ['ล่ม', 'bad'], repeat: ['แจ้งซ้ำ', 'bad'], recover: ['กลับมา', 'ok'], warning: ['ช้า', 'warn'], test: ['ทดสอบ', 'info'] };
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 async function loadNotify() {
   try { S.notify = await api('GET', '/api/notify'); renderNotify(); } catch (e) { const b = $('#notifyBox'); if (b) b.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
 }
@@ -859,12 +837,9 @@ function switchTab(t) {
   if (t === 'users') { vUsers(); return; }
   if (t === 'devices') { view.innerHTML = vDevicesSkeleton(); bindDeviceFilters(); vDevicesList(); return; }
   if (t === 'settings') { view.innerHTML = vSettings(); bindSettings(); return; }
-<<<<<<< HEAD
   if (t === 'reports') { vReports(); return; }
   if (t === 'dbsync') { vDbSync(); return; }
   if (t === 'wazuh') { vWazuh(); return; }
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   if (t === 'topology') { view.innerHTML = vTopology(); bindTopology(); drawTopology(); if (!store.get('nms_topo_set', false)) { topoFit(); store.set('nms_topo_set', true); } return; }
   updateView();
 }
@@ -884,11 +859,7 @@ function bindDeviceFilters() {
   $('#ft').addEventListener('change', (e) => { S.filter.type = e.target.value; vDevicesList(); });
 }
 function bindSettings() {
-<<<<<<< HEAD
   if (can('admin')) { loadNotify(); loadMysql(); loadApiBox(); loadBackupBox(); }
-=======
-  if (can('admin')) loadNotify();
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   const f = $('#setForm'); if (!f) return;
   f.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -955,11 +926,7 @@ document.addEventListener('click', async (e) => {
         finally { el.disabled = false; el.innerHTML = old; }
         break;
       }
-<<<<<<< HEAD
       case 'copy': await copyText(el.dataset.v); toast(el.dataset.v.length > 40 || el.dataset.v.startsWith('stk_') ? 'คัดลอกแล้ว' : `คัดลอก ${el.dataset.v} แล้ว`); break;
-=======
-      case 'copy': await navigator.clipboard.writeText(el.dataset.v); toast(`คัดลอก ${el.dataset.v} แล้ว`); break;
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
       case 'view': S.view = el.dataset.v; store.set('nms_view', S.view); $$('.seg button').forEach((b) => b.classList.toggle('on', b.dataset.v === S.view)); vDevicesList(); break;
       case 'fst': S.filter.status = el.dataset.s; vDevicesList(); break;
       case 'afilter': S.alertFilter = el.dataset.f; updateView(); break;

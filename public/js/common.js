@@ -27,10 +27,7 @@ const ICONS = {
   users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
   sliders: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
   alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/>',
-<<<<<<< HEAD
   cpu: '<rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9zM9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   activity: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
   shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
   trash: '<path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
@@ -56,14 +53,11 @@ const ICONS = {
   radio: '<path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5M19.1 4.9C23 8.8 23 15.1 19.1 19"/>',
   wand: '<path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72M14 7l3 3M5 6v4M19 14v4M10 2v2M7 8H3M21 16h-4M11 3H9"/>',
   arrow: '<path d="M5 12h14M12 5l7 7-7 7"/>',
-<<<<<<< HEAD
   chart: '<path d="M3 3v18h18"/><path d="M7 16v-4M11 16V8M15 16v-6M19 16V5"/>',
   calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
   chevl: '<path d="m15 18-6-6 6-6"/>',
   chevr: '<path d="m9 18 6-6-6-6"/>',
   bulb: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5M9 18h6M10 22h4"/>',
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   key: '<path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4M21 2l-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/>',
 };
 function icon(n, s = 18, cls = '') {
@@ -78,13 +72,9 @@ async function api(method, url, body) {
   }
   const r = await fetch(url, opt);
   const j = await r.json().catch(() => ({}));
-<<<<<<< HEAD
   if (r.status === 401 && !url.endsWith('/login')) {
     if (window.ST_RESTORED) throw new Error('กรุณาเข้าสู่ระบบใหม่');   // หลังกู้คืน: ให้ผู้ใช้อ่านผลก่อน แล้วกดเข้าสู่ระบบเอง
     location.href = '/login'; throw new Error('กรุณาเข้าสู่ระบบ'); }
-=======
-  if (r.status === 401 && !url.endsWith('/login')) { location.href = '/login'; throw new Error('กรุณาเข้าสู่ระบบ'); }
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   if (!r.ok) throw new Error(j.error || `เกิดข้อผิดพลาด (${r.status})`);
   return j;
 }
@@ -108,12 +98,9 @@ function toast(msg, kind = '') {
 function logoHtml() {
   return `<div class="logo">${icon('network', 24)}<span class="live"></span></div>`;
 }
-<<<<<<< HEAD
 /** คัดลอกข้อความ — ใช้ Clipboard API ถ้าได้ (https/localhost) ไม่งั้นใช้ textarea (http ภายในโรงพยาบาล) */
 async function copyText(v) {
   try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(v); return; } } catch { /* fallback */ }
   const t = document.createElement('textarea'); t.value = v; t.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(t); t.select();
   try { document.execCommand('copy'); } finally { t.remove(); }
 }
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4

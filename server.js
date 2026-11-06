@@ -14,7 +14,6 @@ const path = require('path');
 const crypto = require('crypto');
 const net = require('net');
 const { execFile } = require('child_process');
-<<<<<<< HEAD
 const createMysqlLog = require('./lib/mysqlLog');
 const createDbSync = require('./lib/dbSync');
 const createGateway = require('./lib/apiGateway');
@@ -23,23 +22,17 @@ const createWazuh = require('./lib/wazuh');
 const openapiSpec = require('./lib/openapi');
 const APP_VERSION = (() => { try { return require('./package.json').version; } catch { return '0'; } })();
 const STARTED = Date.now();
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const HOST = process.env.HOST || '0.0.0.0';
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
-<<<<<<< HEAD
 const BACKUP_DIR = path.join(DATA_DIR, 'backups');
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 const PUBLIC = path.join(__dirname, 'public');
 const HISTORY_LEN = 60;
 const SESSION_TTL = 12 * 3600 * 1000;
 const TYPES = ['isp', 'firewall', 'router', 'core', 'switch', 'ap', 'server', 'vm', 'database',
   'client', 'laptop', 'camera', 'printer', 'medical', 'kiosk', 'iot', 'other'];
-<<<<<<< HEAD
 const ROLE_RANK = { integration: 0, viewer: 1, operator: 2, admin: 3 };
 
 /* ------------------------------------------------------------------ DB */
@@ -61,30 +54,20 @@ const wazuh = createWazuh({
   onAgentChange: (ag, prev, cur) => onWazuhAgent(ag, prev, cur),
   onUpdate: () => broadcast(),
 }); // Wazuh Server API (lib/wazuh.js)
-=======
-const ROLE_RANK = { viewer: 1, operator: 2, admin: 3 };
-
-/* ------------------------------------------------------------------ DB */
-let db;
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 function defaultDB() {
   return {
     users: [], devices: [], alerts: [],
     settings: { intervalSec: 10, timeoutMs: 1000, warnMs: 100, slaTarget: 99.8, siteName: 'โรงพยาบาล' },
     notify: defaultNotify(),
-<<<<<<< HEAD
     mysql: defaultMysql(),
     dbsync: defaultDbSync(),
     api: defaultApi(),
     wazuh: defaultWazuh(),
     backup: defaultBackupCfg(),
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
     seq: { device: 0, alert: 0, user: 0 },
   };
 }
 const MOPH_URL = 'https://morpromt2f.moph.go.th/api/notify/send';
-<<<<<<< HEAD
 function defaultApi() { return { enabled: true, cors: [], defaultRate: 120, trustProxy: false, keys: [] }; }
 function defaultWazuh() {
   return { enabled: false, url: '', user: 'wazuh', password: '', verifyTls: false, intervalMin: 5, scaMax: 20,
@@ -104,8 +87,6 @@ function defaultMysql() {
     user: e.NMS_MYSQL_USER || '', password: e.NMS_MYSQL_PASSWORD || '', database: e.NMS_MYSQL_DATABASE || 'smart_topology',
     ssl: false, rawLog: true, rawDays: 30, statDays: 90, hourDays: 0 };
 }
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 function defaultNotify() {
   return { enabled: false, onDown: true, onRecover: true, onWarning: false, criticalOnly: false,
     suppressChildren: true, repeatMin: 0, publicUrl: '', channels: [], log: [] };
@@ -130,7 +111,6 @@ function loadDB() {
     db.settings = Object.assign(defaultDB().settings, db.settings);
     db.seq = Object.assign(defaultDB().seq, db.seq);
     db.notify = Object.assign(defaultNotify(), db.notify);
-<<<<<<< HEAD
     db.mysql = Object.assign(defaultMysql(), db.mysql);
     db.dbsync = Object.assign(defaultDbSync(), db.dbsync);
     db.dbsync.master = Object.assign(defaultDbSide(), db.dbsync.master);
@@ -138,8 +118,6 @@ function loadDB() {
     db.api = Object.assign(defaultApi(), db.api);
     db.wazuh = Object.assign(defaultWazuh(), db.wazuh);
     db.backup = Object.assign(defaultBackupCfg(), db.backup);
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   } else db = def;
   if (!db.users.length) {
     const pw = process.env.ADMIN_PASSWORD || 'admin1234';
@@ -215,7 +193,6 @@ function addAlert(d, severity, kind, message) {
   db.alerts.push(a);
   if (db.alerts.length > 2000) db.alerts.splice(0, db.alerts.length - 2000);
   save();
-<<<<<<< HEAD
   pushAlertEvent(a, 'raised');
   return a;
 }
@@ -229,10 +206,6 @@ function pushAlertEvent(a, ev) {
     device: { id: a.deviceId, name: a.deviceName, ip: a.ip }, alert_id: a.id, site: db.settings.siteName,
     time: new Date().toISOString(), ...(ev === 'resolved' && a.resolvedAt ? { duration_sec: Math.round((a.resolvedAt - a.created) / 1000) } : {}) } });
 }
-=======
-  return a;
-}
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 function resolveAlerts(d, kinds) {
   const done = [];
   for (const a of db.alerts) {
@@ -241,10 +214,7 @@ function resolveAlerts(d, kinds) {
     }
   }
   if (done.length) save();
-<<<<<<< HEAD
   done.forEach((a) => pushAlertEvent(a, 'resolved'));
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   return done;
 }
 function onTransition(d, prev, st) {
@@ -344,11 +314,7 @@ async function sendChannel(c, msg, attempt = 1) {
       url = c.url || MOPH_URL;
       headers['client-key'] = c.clientKey || ''; headers['secret-key'] = c.secretKey || '';
       body = { messages: [c.format === 'text' ? { type: 'text', text: msg.text.slice(0, 4900) }
-<<<<<<< HEAD
         : { type: 'flex', altText: msg.title.slice(0, 390), contents: msg.flex || flexBubble(msg) }] };
-=======
-        : { type: 'flex', altText: msg.title.slice(0, 390), contents: flexBubble(msg) }] };
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
     } else if (c.type === 'telegram') {
       url = `https://api.telegram.org/bot${c.botToken}/sendMessage`;
       body = { chat_id: c.chatId, text: msg.text.slice(0, 4000), disable_web_page_preview: true };
@@ -477,16 +443,11 @@ async function checkDevice(d) {
     st = ms > db.settings.warnMs ? 'warning' : 'online';
   }
   if (d.maintenance) st = 'maintenance';
-<<<<<<< HEAD
   mylog.recordCheck(d, ms, st, r.lastCheck);
   if (st !== r.status) {
     const prev = r.status, prevSince = r.since;
     r.status = st; r.since = Date.now();
     mylog.recordEvent(d, prev, st, prevSince, r.latency, r.since);
-=======
-  if (st !== r.status) {
-    const prev = r.status; r.status = st; r.since = Date.now();
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
     onTransition(d, prev, st);
   }
 }
@@ -538,11 +499,7 @@ function devView(d) {
 function stateView() {
   return {
     cycle, lastCycleAt, serverTime: Date.now(), settings: db.settings,
-<<<<<<< HEAD
     devices: db.devices.map(devView), trend, alerts: db.alerts.slice(-300), dbsync: dbsync.summary(), wazuh: wazuh.summary(),
-=======
-    devices: db.devices.map(devView), trend, alerts: db.alerts.slice(-300),
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   };
 }
 const clients = new Set();
@@ -550,13 +507,8 @@ function broadcast() {
   if (!clients.size) return;
   const payload = `event: state\ndata: ${JSON.stringify(stateView())}\n\n`;
   for (const c of clients) {
-<<<<<<< HEAD
     const ok = typeof c.uid === 'string' ? db.api.keys.some((k) => `key:${k.id}` === c.uid && k.enabled) : db.users.some((x) => x.id === c.uid);
     if (!ok) { c.res.end(); clients.delete(c); continue; }
-=======
-    const u = db.users.find((x) => x.id === c.uid);
-    if (!u) { c.res.end(); clients.delete(c); continue; }
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
     c.res.write(payload);
   }
 }
@@ -625,15 +577,12 @@ function parseCookies(req) {
   return out;
 }
 function getUser(req) {
-<<<<<<< HEAD
   const v = gateway.verify(req, clientIp(req));
   if (v) {
     if (v.error) { const e = new HttpError(v.status, v.error); e.rate = v.rate; throw e; }
     const k = v.key;
     return { u: { id: `key:${k.id}`, username: `api:${k.name}`, name: k.name, role: k.role, apiKey: true, keyId: k.id, created: k.created }, token: null, key: k, rate: v.rate };
   }
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   const t = parseCookies(req).nms_sid;
   if (!t) return null;
   const s = sessions.get(t);
@@ -647,7 +596,6 @@ function setCookie(req, res, val, maxAge) {
   res.setHeader('Set-Cookie', `nms_sid=${val}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${isSecure(req) ? '; Secure' : ''}`);
 }
 const publicUser = (u) => ({ id: u.id, username: u.username, name: u.name, role: u.role, mustChange: !!u.mustChange, created: u.created, lastLogin: u.lastLogin || null });
-<<<<<<< HEAD
 /* ------------------------------------------------- DB Master/Slave helpers */
 const DB_PSEUDO = () => ({ id: -1, name: 'ฐานข้อมูล HIS (Master/Slave)', ip: `${db.dbsync.master.host} → ${db.dbsync.slave.host}`, critical: true });
 function notifyDb(kind, text, durMs) {
@@ -850,17 +798,11 @@ function validMysql(b, forAction = false) {
   if ((c.enabled || forAction) && (!c.host || !c.user)) throw bad('กรุณาระบุ Host และชื่อผู้ใช้ MySQL');
   return c;
 }
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 function need(user, role) { if (ROLE_RANK[user.role] < ROLE_RANK[role]) throw new HttpError(403, 'สิทธิ์ไม่เพียงพอสำหรับการดำเนินการนี้'); }
 
 /* ------------------------------------------------------------- HTTP */
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
-<<<<<<< HEAD
   '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.json': 'application/json', '.woff2': 'font/woff2', '.xml': 'application/xml; charset=utf-8' };
-=======
-  '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.json': 'application/json', '.woff2': 'font/woff2' };
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 function secHeaders(res) {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
@@ -872,17 +814,10 @@ function send(res, code, obj) {
   res.writeHead(code, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
   res.end(JSON.stringify(obj));
 }
-<<<<<<< HEAD
 function readBody(req, limit = 2e6) {
   return new Promise((resolve, reject) => {
     let size = 0; const chunks = [];
     req.on('data', (c) => { size += c.length; if (size > limit) { reject(new HttpError(413, 'ข้อมูลใหญ่เกินไป')); req.destroy(); } else chunks.push(c); });
-=======
-function readBody(req) {
-  return new Promise((resolve, reject) => {
-    let size = 0; const chunks = [];
-    req.on('data', (c) => { size += c.length; if (size > 2e6) { reject(new HttpError(413, 'ข้อมูลใหญ่เกินไป')); req.destroy(); } else chunks.push(c); });
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
     req.on('end', () => {
       if (!chunks.length) return resolve({});
       try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); } catch { reject(bad('รูปแบบ JSON ไม่ถูกต้อง')); }
@@ -893,10 +828,7 @@ function readBody(req) {
 function serveStatic(req, res, pathname) {
   if (pathname === '/') pathname = '/index.html';
   if (pathname === '/login') pathname = '/login.html';
-<<<<<<< HEAD
   if (pathname === '/api-docs') pathname = '/api-docs.html';
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   const file = path.normalize(path.join(PUBLIC, pathname));
   if (!file.startsWith(PUBLIC + path.sep)) { res.writeHead(403); return res.end(); }
   fs.stat(file, (err, st) => {
@@ -905,15 +837,11 @@ function serveStatic(req, res, pathname) {
     fs.createReadStream(file).pipe(res);
   });
 }
-<<<<<<< HEAD
 function clientIp(req) {
   const trust = process.env.TRUST_PROXY === '1' || (db && db.api && db.api.trustProxy);
   const xf = trust ? (req.headers['x-forwarded-for'] || '').split(',')[0].trim() : '';
   return createGateway.normIp(xf || req.socket.remoteAddress || '');
 }
-=======
-function clientIp(req) { return (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.socket.remoteAddress || ''; }
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
 function csvCell(v) { const s = String(v == null ? '' : v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }
 function parseCsvLine(line) {
   const out = []; let cur = '', q = false;
@@ -956,7 +884,6 @@ function demoDevices() {
   return added;
 }
 
-<<<<<<< HEAD
 /* ================================================================
    ส่วนขยาย: API ภายนอก, API Key, สำรอง/กู้คืน, Wazuh
    ================================================================ */
@@ -1271,10 +1198,6 @@ async function handleApi(req, res, url) {
       cycle, lastCycleAt, mysqlLog: mylog.active(), dbsync: dbsync.summary().code || null, wazuh: wazuh.summary().ok, time: new Date().toISOString() });
   }
   if (p === '/api/openapi.json' && m === 'GET') return send(res, 200, openapiSpec(APP_VERSION));
-=======
-async function handleApi(req, res, url) {
-  const p = url.pathname, m = req.method;
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   if (m !== 'GET' && m !== 'HEAD') {
     const ct = req.headers['content-type'] || '';
     if (!ct.includes('application/json')) throw bad('ต้องส่งข้อมูลแบบ application/json');
@@ -1299,7 +1222,6 @@ async function handleApi(req, res, url) {
     return send(res, 200, { user: publicUser(u) });
   }
 
-<<<<<<< HEAD
   let auth;
   try { auth = getUser(req); } catch (e) {
     if (e.rate) { res.setHeader('Retry-After', String(e.rate.reset)); }
@@ -1318,14 +1240,6 @@ async function handleApi(req, res, url) {
 
   if (p === '/api/logout' && m === 'POST') { sessions.delete(auth.token); setCookie(req, res, '', 0); return send(res, 200, { ok: true }); }
   if (p === '/api/me' && m === 'GET') return send(res, 200, { user: auth.key ? { ...publicUser(user), apiKey: true, keyId: user.keyId } : publicUser(user) });
-=======
-  const auth = getUser(req);
-  if (!auth) throw new HttpError(401, 'กรุณาเข้าสู่ระบบ');
-  const user = auth.u;
-
-  if (p === '/api/logout' && m === 'POST') { sessions.delete(auth.token); setCookie(req, res, '', 0); return send(res, 200, { ok: true }); }
-  if (p === '/api/me' && m === 'GET') return send(res, 200, { user: publicUser(user) });
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   if (p === '/api/me/password' && m === 'POST') {
     const b = await readBody(req);
     if (!checkPw(b.current || '', user.pass)) throw bad('รหัสผ่านปัจจุบันไม่ถูกต้อง');
@@ -1437,11 +1351,7 @@ async function handleApi(req, res, url) {
     const a = db.alerts.find((x) => x.id === +mm[1]);
     if (!a) throw new HttpError(404, 'ไม่พบการแจ้งเตือน');
     if (mm[2] === 'ack') { a.status = a.status === 'resolved' ? a.status : 'acknowledged'; a.ackBy = user.username; }
-<<<<<<< HEAD
     else { a.status = 'resolved'; a.resolvedAt = Date.now(); a.ackBy = a.ackBy || user.username; pushAlertEvent(a, 'resolved'); }
-=======
-    else { a.status = 'resolved'; a.resolvedAt = Date.now(); a.ackBy = a.ackBy || user.username; }
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
     save(); broadcast(); return send(res, 200, { ok: true });
   }
   if (p === '/api/alerts/clear-resolved' && m === 'POST') {
@@ -1464,7 +1374,6 @@ async function handleApi(req, res, url) {
     return send(res, 200, { settings: s });
   }
 
-<<<<<<< HEAD
   // ---------- DB Master / Slave
   if (p === '/api/dbsync' && m === 'GET') return send(res, 200, dbsyncView(user));
   if (p === '/api/dbsync/config' && m === 'PUT') {
@@ -1561,8 +1470,6 @@ async function handleApi(req, res, url) {
     } catch (e) { console.error('[report]', e); return send(res, 200, { configured: true, connected: false, error: createMysqlLog.friendly(e) }); }
   }
 
-=======
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
   // ---------- external notification
   if (p === '/api/notify' && m === 'GET') { need(user, 'admin'); return send(res, 200, notifyView()); }
   if (p === '/api/notify' && m === 'PUT') {
@@ -1646,7 +1553,6 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 try { loadDB(); } catch (e) {
   if (e.code === 'EACCES' || e.code === 'EPERM') {
     console.error(`[error] ไม่มีสิทธิ์เขียนโฟลเดอร์ข้อมูล ${DATA_DIR}\n` +
@@ -1667,13 +1573,3 @@ async function shutdown() {
 }
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
-=======
-loadDB();
-if (process.env.SEED_DEMO === '1' && !db.devices.length) { demoDevices(); saveNow(); }
-server.listen(PORT, HOST, () => {
-  console.log(`SMART TOPOLOGY NOC พร้อมใช้งานที่ http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`);
-  runCycle(); schedule();
-});
-process.on('SIGINT', () => { saveNow(); process.exit(0); });
-process.on('SIGTERM', () => { saveNow(); process.exit(0); });
->>>>>>> b1523fd69e2c59dfc02854d02515ba3da33dadb4
